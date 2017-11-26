@@ -14,8 +14,6 @@ tags:
 
 *光变终于诞生啦*
 
-<div align=center>
-<img src="/img/图标.jpeg" alt="title"/>
-</div>
+![](/img/图标.jpeg)
 
 ## 后续

@@ -1,5 +1,5 @@
 # Site settings
-title: 光变
+title: 光    变
 SEOTitle: 光    变 | 光    变
 header-img: img/home-bg.jpg
 email: lyset.tech@gmail.com
@@ -14,8 +14,8 @@ baseurl: ""                             # for example, '/blog' if your blog host
 RSS: false
 # weibo_username:     huxpro
 #zhihu_username:     peng-nan-fang-14/activities
-#github_username:    nanfangstation
-#twitter_username:  huxpro
+github_username:    lyset-tech
+# twitter_username:  huxpro
 # facebook_username:  huxpro
 
 
@@ -87,7 +87,7 @@ service-worker: true
 friends: [
     {
         title: "光变",
-        href: "https://lyset-tech.github.io"
+        href: "http://lyset.cn/"
     },{
         title: "Foo",
         href: "#"
