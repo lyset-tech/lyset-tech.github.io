@@ -1,0 +1,21 @@
+---
+layout:     post
+title:      "黎明"
+subtitle:   "光变第一篇博客"
+date:       2017-11-26
+author:     "lyseter"
+header-img: "img/post-bg-room.jpg"
+catalog: true
+tags:
+    - 光变
+---
+
+## 前言
+
+*光变终于诞生啦*
+
+<div align=center>
+<img src="/img/图标.jpeg" alt="title"/>
+</div>
+
+## 后续

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>光变</title>
+    <description>技术沉淀</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 26 Nov 2017 16:47:00 +0800</pubDate>
+    <lastBuildDate>Sun, 26 Nov 2017 16:47:00 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>黎明</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;光变终于诞生啦&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;div align=center&amp;gt;
+&lt;img src=&quot;/img/图标.jpeg&quot; alt=&quot;title&quot; /&gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;后续&quot;&gt;后续&lt;/h2&gt;
+</description>
+        <pubDate>Sun, 26 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/11/26/%E9%BB%8E%E6%98%8E/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/11/26/%E9%BB%8E%E6%98%8E/</guid>
+        
+        <category>光变</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
