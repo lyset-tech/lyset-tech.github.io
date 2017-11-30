@@ -10,6 +10,8 @@ tags:
     - java
 ---
 
+以下内容为作者辛苦原创，版权归作者所有，如转载演绎请在“光变”微信公众号留言申请，转载文章请在开始处显著标明出处。
+
 ### 实参形参
 前些天看到朋友圈分享了一片文章[《Java函数的传参机制——你真的了解吗？》](http://blog.csdn.net/whuxinxie/article/details/54895768)
 
@@ -341,5 +343,4 @@ JVM会在启动时，调用`java.lang.System.initializeSystemClass`方法，初�
   - sun.java.launcher.diag
 
 > PS：作者使用的JDK 1.8.0_91时，以下参数会从全部JVM接收的系统参数中移除：
-
 
