@@ -1,0 +1,43 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   T.java
+
+
+final class Em extends Enum
+{
+
+    public static Em[] values()
+    {
+        return (Em[])$VALUES.clone();
+    }
+
+    public static Em valueOf(String s)
+    {
+        return (Em)Enum.valueOf(Em, s);
+    }
+
+    private Em(String s, int i)
+    {
+        super(s, i);
+    }
+
+    public static final Em A;
+    public static final Em B;
+    public static final Em C;
+    public static final Em D;
+    public static final Em E;
+    private static final Em $VALUES[];
+
+    static 
+    {
+        A = new Em("A", 0);
+        B = new Em("B", 1);
+        C = new Em("C", 2);
+        D = new Em("D", 3);
+        E = new Em("E", 4);
+        $VALUES = (new Em[] {
+            A, B, C, D, E
+        });
+    }
+}
