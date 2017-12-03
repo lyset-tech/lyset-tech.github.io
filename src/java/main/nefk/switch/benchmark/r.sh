@@ -23,4 +23,5 @@ case $ACTION in
   run)
 java -XX:+UnlockDiagnosticVMOptions  -XX:CompileCommand=print,nefk.Switch::* -classpath lib/commons-math3-3.2.jar:lib/jmh-core-1.19.jar:lib/jmh-generator-annprocess-1.19.jar:lib/jopt-simple-4.6.jar:lib/nefk.jar org.openjdk.jmh.Main
   ;;
+esac
 
