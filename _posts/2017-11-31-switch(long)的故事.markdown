@@ -10,13 +10,7 @@ tags:
     - java
 ---
 
-# switch(long)的故事 
-
-先说一下本人的机器以及环境
-
-- Mac OS
-- JDK 1.8.0_151
-## 学习过程中总会有些不能理解的地方，而我 ^ ^ 选择百度 ^ ^ 
+# switch(long)的故事
 
 作为一个java新手在学习java的过程中，机缘巧合，我写了一段这样的代码
 ```java
@@ -28,9 +22,9 @@ tags:
 出现了这样的错误：
 
 >T.java:5: error: incompatible types: Long cannot be converted to int
->       switch (l){  
+>       switch (l){
 
-什么鬼，String都能支持,long居然不支持，赶紧百度百度
+## 学习过程中总会有些不能理解的地方，而我 ^ ^ 选择百度 ^ ^
 
 [Java语言规范](https://docs.oracle.com/javase/specs/jls/se8/jls8.pdf)里是这样说的
 
@@ -40,9 +34,9 @@ tags:
 
 ？？？ Enum，String，Character，Byte，Short，Integer
      
-嗯？为什么没有long？
+嗯？String都能支持,Long居然不支持，为什么没有Long？
 
-### 仍然不能理解，接着  ^ ^ 百度 ^ ^ 
+## 不能理解，我们接着  ^ ^ 百度 ^ ^
 
 从"20年前"的Java虚拟机规范里上找到[Compile Switch](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html#jvms-3.10)这一节 
 
@@ -63,13 +57,13 @@ tags:
 原来JVM底层提供两种只支持32位大小的偏移量（刚好是int类型的大小）的switch指令 `tableswitch`  和 `lookupswitch` .
 所以在java中其实也只实现了byte, short, char, and int的switch，至于他们的包装类型以及Enum，String都是Java编译器给我们的语法糖,甚至于byte，short，char也会在运行时提升为int.
 
-## 只有Int 别的都是语法糖，那我关心一下实现可以吧  ^ ^ 百度 ^ ^ 
+## 只有Int 别的都是语法糖，那我关心一下实现可以吧  ^ ^ 百度 ^ ^
 
 既然都是语法糖，了解了解是怎么实现的吧，先看看原始类型的包装类是如何实现switch的.
  
 ### switch(Integer)
 ``` java
-private void integerSwitch()
+private void integerSwitch(){
  Integer integerS = 0;
  switch (integerS){
   case 1:
@@ -120,7 +114,7 @@ private void integerSwitch()
 嗯，jad还是可信的，前面Java虚拟机规范提到，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
 看样子是，编译器为我们调整了顺序，似乎它更喜欢`tableswitch`，接着看下一个类型。
 
-### switch( String ) 
+### switch( String )
 ``` java
 private void test1(){
   String feiniao = "feiniao";
@@ -167,7 +161,7 @@ private void test1()
 - 然后使用了一个byte的变量和两次的switch，防止了[hash碰撞](https://zacard.net/2016/08/29/hash-collision/)
 
 哇，这糖为什么可以这么甜那！继续看看还有没有更甜的。
-###   switch( Enum )
+### switch( Enum )
 ```java
 enum Em {
   A,B,C,D,E;
@@ -311,7 +305,7 @@ static class T$1
 
 让我着回去翻Java虚拟机规范。
 
-## tableswitch 和 lookupswitch 的区别? ^ ^ 百度 ^ ^
+## tableswitch 和 lookupswitch 的区别?
 
 >Where the cases of the switch are sparse, the table representation of the tableswitch instruction becomes inefficient in terms of space. The lookupswitch instruction may be used instead. The lookupswitch instruction pairs int keys (the values of the case labels) with target offsets in a table. When a lookupswitch instruction is executed, the value of the expression of the switch is compared against the keys in the table. If one of the keys matches the value of the expression, execution continues at the associated target offset. If no key matches, execution continues at the default target.
 
@@ -344,7 +338,7 @@ int opcode =
 从上面的code可以看到，在最大和最小case的差值不大，且label数偏多的情况下，会选择`tableswitch`，
 当差值很大，label数不多的情况下，会选择`lookupswitch`。
  
-## 好奇宝宝时间！ 
+## 好奇宝宝时间！
 作为一名重度强迫症患者加好奇宝宝，我就是想知道，编译器废了这么大劲，性能到底能差多少？
 
 从上面的code可以看到`tableswitch`的时间复杂度是O(1)，`lookupswitch`的时间复杂度是O(n)，好现在这是我们的假设，让我们看看结果。
@@ -592,14 +586,18 @@ Benchmark      (n)   Mode  Cnt          Score          Error  Units
 `lookupswitch`和`tableswitch`进过JIT优化生成的机器码，居然用得都是二分，
 醉了，不是说好`tableswitch`直接使用跳表，感觉被欺骗了。
 
-###Talk is cheap. Show me the code
-看样子什么都不可靠，从OpenJDK上直接翻JIT的代码，在[parse2.cpp](http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/75d40493551f/src/share/vm/opto/parse2.cpp#l440)里面的create_jump_table方法内我，终于找到了我要的！
-源码是这样的：
+### Talk is cheap. Show me the code
+看样子什么都不可靠，我们还是直接找代码吧，在[parse2.cpp](http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/75d40493551f/src/share/vm/opto/parse2.cpp#l440)文件里的create_jump_table方法内，
+终于找到了我要的！
+
+源码是如此简单的：
 ```c++
+...
 if (num_cases < MinJumpTableSize || num_cases > MaxJumpTableSize)
   return false;
 if (num_cases > (MaxJumpTableSparseness * num_range))
   return false;
+...
 ```
 - 默认 `MinJumpTableSize` 为 10 ,case的数量小于这个不会生成！
 - 默认 `MaxJumpTableSize` 为 65000 ,case的数量大于这个不会生成！
@@ -611,8 +609,13 @@ if (num_cases > (MaxJumpTableSparseness * num_range))
 - Talk is cheap. Show me the code
 - Talk is cheap. Show me the code
 - 都是假的，一切都是假的.
-```
+
+环境信息
+- Mac OS
+- JDK 1.8.0_151
+
                                                                     EVERYTHING IS FAKE 
+                                                                    
                                                  
                                                  
                                                  
