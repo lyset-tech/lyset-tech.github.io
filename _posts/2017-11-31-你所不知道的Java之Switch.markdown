@@ -635,6 +635,9 @@ src/share/vm/opto/parse2.cpp:5763:  if (num_cases < MinJumpTableSize || num_case
 - Mac OS
 - JDK 1.8.0_151
 
+
+**感谢`Lydia`和`觉醒`的宝贵建议和辛苦校对。**
+----
 奥,公众号才是重中之重！
 ============
 
