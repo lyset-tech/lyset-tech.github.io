@@ -597,7 +597,7 @@ tableSwitch     8  thrpt  200  355080497.046 ±  3393523.154  ops/s
 ...
 ```
 `lookupswitch`和`tableswitch`进过JIT优化生成的机器码，居然用得都是二分，
-醉了，不是说好`tableswitch`直接使用跳表，感觉被欺骗了。
+醉了，不是说好`tableswitch`的话直接使用跳表吗，感觉自己被欺骗了。
 
 ### Talk is cheap. Show me the code
 看样子什么都不可靠，我们还是直接翻`hotspot`的源码吧，在[parse2.cpp](http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/75d40493551f/src/share/vm/opto/parse2.cpp#l440)文件里的create_jump_table方法内，
