@@ -170,9 +170,11 @@ private void test1()
 }
 ```
 - 先来看看这个，使用了新的变量s1，防止并发操作，所造成的结果不可知.
-- 然后如果两个case值具有相同的hashcode，那么会生成到同一个case中。
+- 然后使用String的hashcode和一个额外的switch，将对于String的switch转换为对临时变量byte0的switch。
+- 中间还帮我们处理了"Ea"和"FB"两个字符串hashcode值相同的情况。
+- 最终转换成了一个对于变量byte0的`tableswtich`。
 
-哇，这糖为什么可以这么甜那！继续看看还有没有更甜的。
+哇，这糖为什么可以这么甜那！接着往下看看还有没有更甜的。
 ### switch( Enum )
 ```java
 enum Em {
