@@ -317,7 +317,7 @@ static class T$1
 
 看来区别就在于 `tableswitch` 和 `lookupswitch` 了
 
-让我着回去翻Java虚拟机规范。
+这我就很好奇了，让我着回去翻Java虚拟机规范。
 
 ## tableswitch 和 lookupswitch 的区别?
 
