@@ -349,11 +349,11 @@ int opcode =
     ?
     tableswitch : lookupswitch;
 ```
-从上面的code可以看到，在最大和最小case的差值不大，且label数偏多的情况下，会选择`tableswitch`，
-当差值很大，label数不多的情况下，会选择`lookupswitch`。
+我可以概括性的说，在最大和最小case的差值不大的且label数偏多的情况下，会选择`tableswitch`，
+当差值很大而label又数不多的情况下，会选择`lookupswitch`。
  
 ## 好奇宝宝时间！
-作为一名重度强迫症患者加好奇宝宝，我就是想知道，编译器废了这么大劲，性能到底能差多少？
+说这么多有什么用呢？作为一名重度强迫症患者加好奇宝宝，我就是想知道，编译器废了这么大劲，性能到底能差多少？
 
 从上面的code可以看到`tableswitch`的时间复杂度是O(1)，`lookupswitch`的时间复杂度是O(n)，好现在这是我们的假设，让我们看看结果。
 
