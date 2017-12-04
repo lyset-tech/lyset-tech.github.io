@@ -111,9 +111,9 @@ private void integerSwitch()
 40: invokevirtual #5 // Method java/io/PrintStream.println:(Ljava/lang/Object;)V
 43: return
 ```
-嗯，jad还是可信的，前面Java虚拟机规范提到，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
+嗯，jad还是可信的，前面Java虚拟机规范提到，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
 看样子是，编译器为我们调整了顺序，似乎它更喜欢`tableswitch`，接着看下一个类型。
-
+
 ### switch( String )
 ``` java
 private void test1(){
@@ -157,10 +157,10 @@ private void test1()
     }
   }
 ```
-- 先来看看这个，使用了新的变量s1，防止并发操作，所造成的结果不可知.
+- 先来看看这个，使用了新的变量s1，防止并发操作，所造成的结果不可知.
 - 然后使用了一个byte的变量和两次的switch，防止了[hash碰撞](https://zacard.net/2016/08/29/hash-collision/)
 
-哇，这糖为什么可以这么甜那！继续看看还有没有更甜的。
+哇，这糖为什么可以这么甜那！继续看看还有没有更甜的。
 ### switch( Enum )
 ```java
 enum Em {
@@ -237,7 +237,7 @@ private void test2()
 
 - switch的东西也不是原先的我们定义的Em，
 
-让我缓缓，，，先用javap看一下bytecode
+让我缓缓，，，先用javap看一下bytecode
 
 ```java
  0: getstatic     #9 // Field Em.A:LEm;
@@ -284,7 +284,7 @@ static class T$1
 }
 ```
 好像明白了什么！
-- 假如不使用这个额外的T$1类，我所想象的代码因该长这样
+- 假如不使用这个额外的T$1类，我所想象的代码因该长这样
 ``` java
 //常量池里的东西先不管了
 0: getstatic     #9     
@@ -309,9 +309,9 @@ static class T$1
 
 >Where the cases of the switch are sparse, the table representation of the tableswitch instruction becomes inefficient in terms of space. The lookupswitch instruction may be used instead. The lookupswitch instruction pairs int keys (the values of the case labels) with target offsets in a table. When a lookupswitch instruction is executed, the value of the expression of the switch is compared against the keys in the table. If one of the keys matches the value of the expression, execution continues at the associated target offset. If no key matches, execution continues at the default target.
 
-前面提到了，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
+前面提到了，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
 但是，当`switch`里的case值非常稀疏的时候，`tableswitch`的做法在空间损耗方面非常糟糕，
-有道理，所以`lookupswitch`的做法是，将case的int值和转跳的偏移量作为一对放在了一个表里，
+有道理，所以`lookupswitch`的做法是，将case的int值和转跳的偏移量作为一对放在了一个表里，
 当`lookupswitch`被执行的时候，这switch的表达式的值和这个表里的keys逐一比较，
 没有找到则使用默认值，似乎在空间上是省了，不过时间上就慢了。
 
@@ -410,7 +410,7 @@ public class Switch {
 ```
 当然我们直接java代码这样写Switch类是没用的，因为这样的`lookupSwitch`会被被编译器优化成`tableswitch`，
 所以我们使用[jasmin](https://github.com/Sable/jasmin)写
-```
+```java
 .class public nefk/Switch
 .super java/lang/Object
 
@@ -503,35 +503,34 @@ Other:
 从switch 1 到 switch 8 个迭代测试200次 吞吐量平均值是这样的
 ```
 Benchmark      (n)   Mode  Cnt          Score          Error  Units
- lookupSwitch    1  thrpt  200  323330446.034 ±  2445701.999  ops/s
- tableSwitch     1  thrpt  200  319148199.518 ±  2598409.017  ops/s
+lookupSwitch    1  thrpt  200  323330446.034 ±  2445701.999  ops/s
+tableSwitch     1  thrpt  200  319148199.518 ±  2598409.017  ops/s
 
- lookupSwitch    2  thrpt  200  362462418.531 ±  2113632.446  ops/s
- tableSwitch     2  thrpt  200  336827136.850 ± 13390837.980  ops/s
+lookupSwitch    2  thrpt  200  362462418.531 ±  2113632.446  ops/s
+tableSwitch     2  thrpt  200  336827136.850 ± 13390837.980  ops/s
 
- lookupSwitch    3  thrpt  200  358321384.210 ±  3603503.904  ops/s
- tableSwitch     3  thrpt  200  357352579.969 ±  4501450.687  ops/s
+lookupSwitch    3  thrpt  200  358321384.210 ±  3603503.904  ops/s
+tableSwitch     3  thrpt  200  357352579.969 ±  4501450.687  ops/s
 
- lookupSwitch    4  thrpt  200  401580310.966 ±  4127000.494  ops/s
- tableSwitch     4  thrpt  200  376005438.482 ± 14937683.947  ops/s
+lookupSwitch    4  thrpt  200  401580310.966 ±  4127000.494  ops/s
+tableSwitch     4  thrpt  200  376005438.482 ± 14937683.947  ops/s
 
- lookupSwitch    5  thrpt  200  318344827.113 ±  2553139.591  ops/s
- tableSwitch     5  thrpt  200  316609397.120 ±  4390158.172  ops/s
+lookupSwitch    5  thrpt  200  318344827.113 ±  2553139.591  ops/s
+tableSwitch     5  thrpt  200  316609397.120 ±  4390158.172  ops/s
 
- lookupSwitch    6  thrpt  200  327729755.563 ±  3328732.069  ops/s
- tableSwitch     6  thrpt  200  321749811.593 ±  2651391.425  ops/s
+lookupSwitch    6  thrpt  200  327729755.563 ±  3328732.069  ops/s
+tableSwitch     6  thrpt  200  321749811.593 ±  2651391.425  ops/s
 
- lookupSwitch    7  thrpt  200  361246393.893 ±  4742280.906  ops/s
- tableSwitch     7  thrpt  200  358376601.529 ±  3350421.622  ops/s
+lookupSwitch    7  thrpt  200  361246393.893 ±  4742280.906  ops/s
+tableSwitch     7  thrpt  200  358376601.529 ±  3350421.622  ops/s
 
- lookupSwitch    8  thrpt  200  347337820.333 ±  4287812.567  ops/s
- tableSwitch     8  thrpt  200  355080497.046 ±  3393523.154  ops/s
-
+lookupSwitch    8  thrpt  200  347337820.333 ±  4287812.567  ops/s
+tableSwitch     8  thrpt  200  355080497.046 ±  3393523.154  ops/s
 ```
 ### 预测失败！！！
 对与相同的case值`tableswitch`和`lookupswitch`性能是差不多的，差不多的！
 
-嗯，前面编译器做了那么多，原来结果都是一样的，我只想问一句，大哥你是不是觉得心有点累，
+嗯，前面编译器做了那么多，原来结果都是一样的，我只想问一句，大哥你是不是觉得心有点累，
 
 我帮你监督一下你的小弟JIT。
 
