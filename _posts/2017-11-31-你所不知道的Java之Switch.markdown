@@ -329,7 +329,7 @@ static class T$1
 当`lookupswitch`被执行的时候，这switch的表达式的值和这个表里的keys逐一比较，
 没有找到则使用默认值，似乎在空间上是省了，不过时间上就慢了。
 
-我们再看一下编译器是怎么选择的源码：
+我们再看一下javac的源码：
 ```java
 // For each case, store its label in an array.
 int lo = Integer.MAX_VALUE;  // minimum label.
