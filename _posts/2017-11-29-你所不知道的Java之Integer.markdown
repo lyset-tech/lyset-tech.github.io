@@ -209,7 +209,7 @@ public static void testOne() {
 
 请问输出是什么？
 如果你肯定的说是`2`，那么你上面是白学了，请直接拨打`95169`。
-我可以肯定的告诉你，它可以是\[`Integer.MIN_VALUE\~Integer.MAX_VALUE`\]区间的任意一个值。
+我可以肯定的告诉你，它可以是\[`Integer.MIN_VALUE~Integer.MAX_VALUE`\]区间的任意一个值。
 
 > 惊喜不惊喜！意外不意外！刺激不刺激！
 
@@ -252,7 +252,7 @@ public static void testOne() {
 }
 ```
 
-所以只要在方法调用前修改`Integer.IntegerCache.cache[2]`的值就可以了，所以在类的静态初始化部分加些代码。
+所以只要在方法调用前修改`Integer.IntegerCache.cache[2 + 128]`的值就可以了，所以在类的静态初始化部分加些代码。
 
 ```java
 public class OnePlusOne {
@@ -341,6 +341,17 @@ JVM会在启动时，调用`java.lang.System.initializeSystemClass`方法，初�
   - java.lang.Integer.IntegerCache.high
   - sun.zip.disableMemoryMapping
   - sun.java.launcher.diag
+> PS：作者使用的JDK 1.8.0_91
 
-> PS：作者使用的JDK 1.8.0_91时，以下参数会从全部JVM接收的系统参数中移除：
+#### Java 9的IntegerCache
+幻想一下，如果以上淘气的玩法出现在第三方的依赖包中，绝对有一批程序员会疯掉（请不要尝试这么恶劣的玩法，后果很严重）。
 
+庆幸的是Java 9对此进行了限制。可以在相应的module中编写module-info.java文件，限制了使用反射来访问成员等，按照需要声明后，代码只能访问字段、方法和其他用反射能访问的信息，只有当类在相同的模块中，或者模块打开了包用于反射方式访问。详细内容可参考一下文章：
+[在 Java 9 里对 IntegerCache 进行修改？](https://coyee.com/article/12102-hacking-the-integercache-in-java-9)
+
+**感谢Lydia和飞鸟的宝贵建议和辛苦校对。**
+
+### 关注公众号
+如果文章对你有所帮助，请给作者块糖吃。
+可以关注我们的公众号，定期发布高质量文章。
+![光变：微信公众号](/img/wx_lyset_qrcode.jpg)
