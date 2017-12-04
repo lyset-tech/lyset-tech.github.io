@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "switch(Long)的故事"
-subtitle:   "一些Java编程的常识"
+title:      "你所不知道的Java之Integer"
+subtitle:   "switch(Long)的故事"
 date:       2017-11-31
 author:     "飞鸟"
 header-img: "img/header-banner/coffee-bean_1920x1280.jpg"
@@ -598,11 +598,11 @@ tableSwitch     8  thrpt  200  355080497.046 ±  3393523.154  ops/s
 醉了，不是说好`tableswitch`直接使用跳表，感觉被欺骗了。
 
 ### Talk is cheap. Show me the code
-看样子什么都不可靠，我们还是直接找代码吧，在[parse2.cpp](http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/75d40493551f/src/share/vm/opto/parse2.cpp#l440)文件里的create_jump_table方法内，
+看样子什么都不可靠，我们还是直接翻`hotspot`的源码吧，在[parse2.cpp](http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/75d40493551f/src/share/vm/opto/parse2.cpp#l440)文件里的create_jump_table方法内，
 终于找到了我要的！
 
-源码是如此简单的：
 ```c++
+bool Parse::create_jump_tables(Node* key_val, SwitchRange* lo, SwitchRange* hi) {
 ...
 if (num_cases < MinJumpTableSize || num_cases > MaxJumpTableSize)
   return false;
@@ -610,7 +610,8 @@ if (num_cases > (MaxJumpTableSparseness * num_range))
   return false;
 ...
 ```
-我们使用`hg grep -i MinJumpTableSize` 搜一下 默认值
+很明显这个方法被用来创建`jump_table`，而关键点就出在这个`MinJumpTableSize`
+我们`hg grep -i MinJumpTableSize` 搜一下 默认值
 ```java
 src/share/vm/opto/c2_globals.hpp:5806:  product_pd(intx, MinJumpTableSize,                                        \
 src/cpu/sparc/vm/c2_globals_sparc.hpp:5763:define_pd_global(intx, MinJumpTableSize,             5);
@@ -621,11 +622,11 @@ src/share/vm/opto/parse2.cpp:5763:  if (num_cases < MinJumpTableSize || num_case
 可以看到在`sparc`下是5，在`x86`下是10，因为我们的case小于10个，所以跟本没有生成`jump_table`。
 ### 结论
 不论btyecode所用使用的swtich是`tableswitch`还是`lookupswitch`，JIT会在运行时根据case数量和配置的参数，作出优化。
-- 默认 `MinJumpTableSize` 为 10 ,case的数量小于这个不会生成！
-- 默认 `MaxJumpTableSize` 为 65000 ,case的数量大于这个不会生成！
-- 默认 `MaxJumpTableSparseness` 为 5 ，case过于稀疏不会生成！
+- 默认 `MinJumpTableSize` 为 10 ,case的数量小于这个不会生成`jump_table`！
+- 默认 `MaxJumpTableSize` 为 65000 ,case的数量大于这个不会生成`jump_table`！
+- 默认 `MaxJumpTableSparseness` 为 5 ，case过于稀疏不会生成`jump_table`！
 
-- 最重要的一点是，大多数情况下源码都是最好的文档（除去那些不能直视代码）。
+- 最重要的一点是，大多数情况下源码都是最好的文档（除去那些无法直视代码）。
 -  Talk is cheap. Show me the code！
 -  Talk is cheap. Show me the code！！
 -  Talk is cheap. Show me the code！！！
@@ -633,3 +634,8 @@ src/share/vm/opto/parse2.cpp:5763:  if (num_cases < MinJumpTableSize || num_case
 #### 环境信息
 - Mac OS
 - JDK 1.8.0_151
+
+奥,公众号才是重中之重！
+============
+
+![lalal](http://lyset.cn/img/wx_lyset_qrcode.jpg)
