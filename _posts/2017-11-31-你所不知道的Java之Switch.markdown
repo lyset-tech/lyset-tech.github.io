@@ -63,7 +63,8 @@ tags:
  
 ### switch(Integer)
 ``` java
-private void integerSwitch(){
+private void integerSwitch()
+{
  Integer integerS = 0;
  switch (integerS){
   case 1:
@@ -116,9 +117,13 @@ private void integerSwitch()
 
 ### switch( String )
 ``` java
-private void test1(){
+private void test1()
+{
   String feiniao = "feiniao";
     switch(feiniao){
+      case "feiniao":
+        System.out.println("feiniao");
+        break;
       case "FB":
         System.out.println("FB");
         break;
@@ -131,34 +136,41 @@ private void test1(){
 使用[jad](http://www.javadecompilers.com/) 反编译后：
 ``` java
 private void test1()
-  {
-    String s = "feiniao";
-    String s1 = s;
-    byte byte0 = -1;
-    switch(s1.hashCode())
-    {
+{
+  String s = "feiniao";
+  String s1 = s;
+  byte byte0 = -1;
+  switch(s1.hashCode()){
+    case -972010061:
+      if(s1.equals("feiniao"))
+        byte0 = 0;
+      break;
+
     case 2236:
       if(s1.equals("Ea"))
-          byte0 = 1;
+          byte0 = 2;
       else
       if(s1.equals("FB"))
-          byte0 = 0;
+          byte0 = 1;
       break;
-    }
-    switch(byte0)
-    {
+  }
+  switch(byte0){
     case 0: // '\0'
-      System.out.println("FB");
+      System.out.println("feiniao");
       break;
 
     case 1: // '\001'
-        System.out.println("Ea");
-        break;
-    }
+      System.out.println("FB");
+      break;
+
+    case 2: // '\002'
+      System.out.println("Ea");
+      break;
   }
+}
 ```
 - 先来看看这个，使用了新的变量s1，防止并发操作，所造成的结果不可知.
-- 然后使用了一个byte的变量和两次的switch，防止了[hash碰撞](https://zacard.net/2016/08/29/hash-collision/)
+- 然后如果两个case值具有相同的hashcode，那么会生成到同一个case中。
 
 哇，这糖为什么可以这么甜那！继续看看还有没有更甜的。
 ### switch( Enum )
@@ -598,15 +610,25 @@ if (num_cases > (MaxJumpTableSparseness * num_range))
   return false;
 ...
 ```
+我们使用`hg grep -i MinJumpTableSize` 搜一下 默认值
+```java
+src/share/vm/opto/c2_globals.hpp:5806:  product_pd(intx, MinJumpTableSize,                                        \
+src/cpu/sparc/vm/c2_globals_sparc.hpp:5763:define_pd_global(intx, MinJumpTableSize,             5);
+src/cpu/x86/vm/c2_globals_x86.hpp:5763:define_pd_global(intx, MinJumpTableSize,             10);
+src/share/vm/adlc/output_h.cpp:5763:      fprintf(fp,"  %sNode() : _index2label(MinJumpTableSize*2) { ", instr->_ident);
+src/share/vm/opto/parse2.cpp:5763:  if (num_cases < MinJumpTableSize || num_cases > MaxJumpTableSize)
+```
+可以看到在`sparc`下是5，在`x86`下是10，因为我们的case小于10个，所以跟本没有生成`jump_table`。
+### 结论
+不论btyecode所用使用的swtich是`tableswitch`还是`lookupswitch`，JIT会在运行时根据case数量和配置的参数，作出优化。
 - 默认 `MinJumpTableSize` 为 10 ,case的数量小于这个不会生成！
 - 默认 `MaxJumpTableSize` 为 65000 ,case的数量大于这个不会生成！
-- 默认 `MaxJumpTableSparseness` 为 5 ，case过于悉数不会生成！
+- 默认 `MaxJumpTableSparseness` 为 5 ，case过于稀疏不会生成！
 
-## 结论
-### 我们用一下午证明了以下几点
-- Talk is cheap. Show me the code
-- Talk is cheap. Show me the code
-- Talk is cheap. Show me the code
+- 最重要的一点是，大多数情况下源码都是最好的文档（除去那些不能直视代码）。
+-  Talk is cheap. Show me the code！
+-  Talk is cheap. Show me the code！！
+-  Talk is cheap. Show me the code！！！
 
 #### 环境信息
 - Mac OS
