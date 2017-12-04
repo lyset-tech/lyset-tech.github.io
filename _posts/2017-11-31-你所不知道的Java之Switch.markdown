@@ -57,7 +57,7 @@ tags:
 原来JVM底层提供两种只支持32位大小的偏移量（刚好是int类型的大小）的switch指令 `tableswitch`  和 `lookupswitch` .
 所以在java中其实也只实现了byte, short, char, and int的switch，至于他们的包装类型以及Enum，String都是Java编译器给我们的语法糖,甚至于byte，short，char也会在运行时提升为int.
 
-## 只有Int 别的都是语法糖，那我关心一下实现可以吧  ^ ^ 百度 ^ ^
+## 只实现了int，别的都是语法糖，那我关心一下实现可以吧  ^ ^ 百度 ^ ^
 
 既然都是语法糖，了解了解是怎么实现的吧，先看看原始类型的包装类是如何实现switch的.
  
