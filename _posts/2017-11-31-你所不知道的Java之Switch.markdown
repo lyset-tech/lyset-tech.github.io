@@ -324,7 +324,7 @@ static class T$1
 >Where the cases of the switch are sparse, the table representation of the tableswitch instruction becomes inefficient in terms of space. The lookupswitch instruction may be used instead. The lookupswitch instruction pairs int keys (the values of the case labels) with target offsets in a table. When a lookupswitch instruction is executed, the value of the expression of the switch is compared against the keys in the table. If one of the keys matches the value of the expression, execution continues at the associated target offset. If no key matches, execution continues at the default target.
 
 前面提到了，当switch内的case值能被表示为一个表中的索引值时，则使用`tableswitch`，
-但是，当`switch`里的case值非常稀疏的时候，`tableswitch`的做法在空间损耗方面非常糟糕，
+但是，当`switch`里的case值非常稀疏的时候，`tableswitch`的做法在空间损耗方面表现得非常糟糕，
 有道理，所以`lookupswitch`的做法是，将case的int值和转跳的偏移量作为一对放在了一个表里，
 当`lookupswitch`被执行的时候，这switch的表达式的值和这个表里的keys逐一比较，
 没有找到则使用默认值，似乎在空间上是省了，不过时间上就慢了。
