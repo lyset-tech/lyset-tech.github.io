@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "你所不知道的Java之Integer"
+title:      "你所不知道的Java之Switch"
 subtitle:   "switch(Long)的故事"
 date:       2017-11-31
 author:     "飞鸟"
