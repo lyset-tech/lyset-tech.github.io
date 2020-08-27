@@ -1,0 +1,90 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   T.java
+
+import java.io.PrintStream;
+
+class T
+{
+
+    T()
+    {
+    }
+
+    private void test()
+    {
+    }
+
+    private void test1()
+    {
+        String s = "feiniao";
+        String s1 = s;
+        byte byte0 = -1;
+        switch(s1.hashCode())
+        {
+        case 2236: 
+            if(s1.equals("Ea"))
+                byte0 = 1;
+            else
+            if(s1.equals("FB"))
+                byte0 = 0;
+            break;
+        }
+        switch(byte0)
+        {
+        case 0: // '\0'
+            System.out.println("FB");
+            break;
+
+        case 1: // '\001'
+            System.out.println("Ea");
+            break;
+        }
+    }
+
+    private void test2()
+    {
+        Em em = Em.A;
+        static class _cls1
+        {
+
+            static final int $SwitchMap$Em[];
+
+            static 
+            {
+                $SwitchMap$Em = new int[Em.values().length];
+                try
+                {
+                    $SwitchMap$Em[Em.A.ordinal()] = 1;
+                }
+                catch(NoSuchFieldError nosuchfielderror) { }
+                try
+                {
+                    $SwitchMap$Em[Em.C.ordinal()] = 2;
+                }
+                catch(NoSuchFieldError nosuchfielderror1) { }
+                try
+                {
+                    $SwitchMap$Em[Em.E.ordinal()] = 3;
+                }
+                catch(NoSuchFieldError nosuchfielderror2) { }
+            }
+        }
+
+        switch(_cls1..SwitchMap.Em[em.ordinal()])
+        {
+        case 1: // '\001'
+            System.out.println("A");
+            break;
+
+        case 2: // '\002'
+            System.out.println("C");
+            break;
+
+        case 3: // '\003'
+            System.out.println("E");
+            break;
+        }
+    }
+}
